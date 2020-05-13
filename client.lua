@@ -72,6 +72,26 @@ function AddCheckbox(name, menu, callback)
   })
 end
 
+function AddList(name, menu, list, callback)
+  local index = Utils.GenerateUUID()
+
+  Components[index] = {
+    name = name,
+    type = "list",
+    action = callback,
+    list = list,
+    listIndex = 1
+  }
+
+  table.insert(Menus[menu].components, {
+    index = index,
+    name = name,
+    type = "list",
+    list = list,
+    listIndex = 1
+  })
+end
+
 function OpenMenu(menu)
   local menuToOpen = Menus[menu]
   if menuToOpen then
@@ -123,6 +143,7 @@ exports("AddSubMenu", AddSubMenu)
 exports("AddButton", AddButton)
 exports("OpenMenu", OpenMenu)
 exports("AddCheckbox", AddCheckbox)
+exports("AddList", AddList)
 exports("CloseMenu", CloseMenu)
 exports("IsAnyMenuOpen", IsAnyMenuOpen)
 exports("IsMenuOpen", IsMenuOpened)
@@ -161,6 +182,54 @@ function GoDown()
   })
 end
 
+function GoLeft()
+  local selected = OpenedMenu.components[HoveredIndex]
+  if selected then
+    if selected.type == "list" then
+      local comp = Components[selected.index]
+      local next = selected.listIndex - 1
+
+      if next < 1 then
+        next = #selected.list
+      end
+
+      selected.listIndex = next
+      comp.listIndex = next
+      SendNUIMessage({
+        type = "set_list_item",
+        data = {
+          index = selected.index,
+          listIndex = next
+        }
+      })
+    end
+  end
+end
+
+function GoRight()
+  local selected = OpenedMenu.components[HoveredIndex]
+  if selected then
+    if selected.type == "list" then
+      local comp = Components[selected.index]
+      local next = selected.listIndex + 1
+
+      if next > #selected.list then
+        next = 1
+      end
+
+      selected.listIndex = next
+      comp.listIndex = next
+      SendNUIMessage({
+        type = "set_list_item",
+        data = {
+          index = selected.index,
+          listIndex = next
+        }
+      })
+    end
+  end
+end
+
 function Enter()
   local selected = OpenedMenu.components[HoveredIndex]
   if selected then
@@ -180,6 +249,9 @@ function Enter()
             state = newState
           }
         })
+      elseif selected.type == "list" then
+        local comp = Components[selected.index]
+        comp.action(comp.list[comp.listIndex])
       elseif selected.type == "button" then
         Components[selected.index].action()
       end
@@ -206,6 +278,10 @@ Citizen.CreateThread(function()
         GoUp()
       elseif IsControlJustPressed(0, 173) then
         GoDown()
+      elseif IsControlJustPressed(0, 174) then
+        GoLeft()
+      elseif IsControlJustPressed(0, 175) then
+        GoRight()
       elseif IsControlJustPressed(0, 176) then
         Enter()
       elseif IsControlJustPressed(0, 177) then

@@ -15,14 +15,26 @@
       </div>
       <div id="menu_body">
         <div v-for="(comp, compIndex) in MenuComponents">
-          <div v-if="comp.type == 'checkbox'" class="menu_checkbox" v-bind:class="{ 'menu_checkbox_hovered': compIndex == MenuOption, 'menu_checkbox_icon_hovered': compIndex == MenuOption }">
+
+          <!-- List -->
+          <div v-if="comp.type == 'list'" class="menu_button" v-bind:class="{ 'menu_button_hovered': compIndex == MenuOption }">
+            <i class="fa fa-arrow-left fa-2x menu_list_icon_left"></i>
+            {{ comp.list[comp.listIndex - 1] }}
+            <i class="fa fa-arrow-right fa-2x menu_list_icon_right"></i>
+          </div>
+
+          <!-- Checkbox -->
+          <div v-else-if="comp.type == 'checkbox'" class="menu_checkbox" v-bind:class="{ 'menu_checkbox_hovered': compIndex == MenuOption, 'menu_checkbox_icon_hovered': compIndex == MenuOption }">
             {{ comp.name }}
             <i v-if="comp.state" class="fa fa-check-square fa-2x menu_checkbox_icon"></i>
             <i v-else class="fa fa-square fa-2x menu_checkbox_icon"></i>
           </div>
-          <div v-else class="menu_button" v-bind:class="{ 'menu_button_hovered': compIndex == MenuOption }">
+
+          <!-- Button -->
+          <div v-else="comp.type == 'button'" class="menu_button" v-bind:class="{ 'menu_button_hovered': compIndex == MenuOption }">
             {{ comp.name }}
           </div>
+
         </div>
       </div>
     </div>

@@ -27,7 +27,6 @@ body {
 #menu_base {
   position: absolute;
   width: 20%;
-  max-height: 30%;
   position: absolute;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: var(--darkgray);
@@ -43,6 +42,7 @@ body {
 
 #menu_body {
   margin: 1px;
+  overflow-x: auto;
 }
 
 /* BUTTON CLASSES */
@@ -84,6 +84,18 @@ body {
   color: var(--black);
 }
 .menu_checkbox_icon {
+  position: absolute;
+  right: 25px;
+  margin-top: -6px;
+}
+
+/* LIST CLASSES */
+.menu_list_icon_left {
+  position: absolute;
+  left: 25px;
+  margin-top: -6px;
+}
+.menu_list_icon_right {
   position: absolute;
   right: 25px;
   margin-top: -6px;

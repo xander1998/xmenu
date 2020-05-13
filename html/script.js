@@ -30,9 +30,16 @@ const app = new Vue({
     },
     SetCheckboxState(data) {
       const comp = this.GetMenuIndexById(data.id)
-      if (comp) {
+      if (comp != null) {
         this.MenuComponents[comp].state = data.state
       }
+    },
+    SetListItem(data) {
+      this.MenuComponents.forEach(comp => {
+        if (comp.index == data.index) {
+          comp.listIndex = data.listIndex
+        }
+      });
     },
     GetMenuIndexById(id) {
       for (let a = 0; a < this.MenuComponents.length; a++) {
@@ -49,5 +56,6 @@ const app = new Vue({
     RegisterEvent("close_menu", this.CloseMenu);
     RegisterEvent("set_menu_option", this.SetMenuOption);
     RegisterEvent("set_checkbox_state", this.SetCheckboxState);
+    RegisterEvent("set_list_item", this.SetListItem);
   }
 })
