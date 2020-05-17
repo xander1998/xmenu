@@ -1,50 +1,65 @@
 -- All Data
 local Menus = {}
 local Components = {}
+local Resources = {}
 
 -- Current Data
 local OpenedMenu = nil
 local HoveredIndex = 1
 
-function AddMenu(name)
+function IsResourceStarted(resource)
+  for _, v in pairs(Resources) do
+    if v == resource then
+      return true
+    end
+  end
+  return false
+end
+
+function AddMenu(name, resource)
   local index = Utils.GenerateUUID()
+  table.insert(Resources, resource)
 
   Menus[index] = {
     name = name,
     type = "base",
     components = {},
+    resource = resource
   }
 
   return index
 end
 
-function AddSubMenu(name, menu)
+function AddSubMenu(name, menu, resource)
   local index = Utils.GenerateUUID()
 
   Menus[index] = {
     name = name,
     type = "submenu",
     components = {},
-    parent = menu
+    parent = menu,
+    resource = resource
   }
 
   table.insert(Menus[menu].components, {
     index = index,
     name = name,
     parent = menu,
-    type = "submenu"
+    type = "submenu",
+    resource = resource
   })
 
   return index
 end
 
-function AddButton(name, menu, callback)
+function AddButton(name, menu, callback, resource)
   local index = Utils.GenerateUUID()
 
   Components[index] = {
     name = name,
     type = "button",
-    action = callback
+    action = callback,
+    resource = resource
   }
 
   table.insert(Menus[menu].components, {
@@ -54,14 +69,15 @@ function AddButton(name, menu, callback)
   })
 end
 
-function AddCheckbox(name, menu, callback)
+function AddCheckbox(name, menu, callback, resource)
   local index = Utils.GenerateUUID()
 
   Components[index] = {
     name = name,
     type = "checkbox",
     action = callback,
-    state = false
+    state = false,
+    resource = resource
   }
 
   table.insert(Menus[menu].components, {
@@ -72,7 +88,7 @@ function AddCheckbox(name, menu, callback)
   })
 end
 
-function AddList(name, menu, list, callback)
+function AddList(name, menu, list, callback, resource)
   local index = Utils.GenerateUUID()
 
   Components[index] = {
@@ -80,7 +96,8 @@ function AddList(name, menu, list, callback)
     type = "list",
     action = callback,
     list = list,
-    listIndex = 1
+    listIndex = 1,
+    resource = resource
   }
 
   table.insert(Menus[menu].components, {
@@ -148,6 +165,31 @@ exports("CloseMenu", CloseMenu)
 exports("IsAnyMenuOpen", IsAnyMenuOpen)
 exports("IsMenuOpen", IsMenuOpened)
 exports("GetOpenedMenu", GetOpenedMenu)
+
+-- EVENTS
+AddEventHandler("onResourceStop", function(resource)
+  if resource == GetCurrentResourceName() then return end
+  if not IsResourceStarted(resource) then return end
+
+  for k, v in pairs(Menus) do
+    if v.resource == resource then
+      Menus[k] = nil
+    end
+  end
+
+  for k, v in pairs(Components) do
+    if v.resource == resource then
+      Components[k] = nil
+    end
+  end
+
+  for k, v in pairs(Resources) do
+    if v == resource then
+      Resources[k] = nil
+    end
+  end
+
+end)
 
 -- CONTROLS
 function GoUp()

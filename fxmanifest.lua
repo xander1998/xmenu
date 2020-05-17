@@ -14,6 +14,8 @@ files {
   "html/style.css"
 }
 
+client_script "classes/*.lua"
 client_script "utils.lua"
 client_script "menu.lua"
 client_script "client.lua"
+client_script "example.lua"
