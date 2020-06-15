@@ -27,6 +27,8 @@ const app = new Vue({
     },
     SetMenuOption(data) {
       this.MenuOption = data.option - 1;
+      const element = document.getElementById(`${this.MenuOption}`);
+      element.scrollIntoView();
     },
     SetCheckboxState(data) {
       const comp = this.GetMenuIndexById(data.id)

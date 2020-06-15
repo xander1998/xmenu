@@ -41,8 +41,10 @@ body {
 }
 
 #menu_body {
+  position: relative;
   margin: 1px;
-  overflow-x: auto;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 /* BUTTON CLASSES */
