@@ -10,7 +10,7 @@
   
   <div id="app" v-show="visible">
     <div id="menu_base" class="middle-right">
-      <div id="menu_header">
+      <div id="menu_header" v-bind:style="{ 'background-color': HeaderColor }">
         {{ MenuName }}
       </div>
       <div id="menu_body">

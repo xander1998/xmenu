@@ -7,7 +7,8 @@ const app = new Vue({
     // Menu
     MenuName: "Default",
     MenuComponents: {},
-    MenuOption: 0
+    MenuOption: 0,
+    HeaderColor: "#0984e3"
   },
   methods: {
     SetResourceData(data) {
@@ -17,6 +18,7 @@ const app = new Vue({
       this.MenuName = data.name;
       this.MenuComponents = data.components;
       this.MenuOption = data.option - 1;
+      this.HeaderColor = data.color || "#0984e3";
       this.visible = true;
     },
     CloseMenu() {

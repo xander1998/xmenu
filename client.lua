@@ -109,7 +109,7 @@ function AddList(name, menu, list, callback, resource)
   })
 end
 
-function OpenMenu(menu)
+function OpenMenu(menu, color)
   local menuToOpen = Menus[menu]
   if menuToOpen then
     SendNUIMessage({
@@ -117,7 +117,8 @@ function OpenMenu(menu)
       data = {
         name = menuToOpen.name,
         components = menuToOpen.components,
-        option = 1
+        option = 1,
+        color = color
       }
     })
     OpenedMenu = menuToOpen
@@ -154,6 +155,16 @@ function GetOpenedMenu()
   return nil
 end
 
+function ClearMenu(menu)
+  for k, v in pairs(Menus[menu].components) do
+    local index = v.index
+    for a = 1, #Components do
+      table.remove(Components, index, 1)
+    end
+    table.remove(Menus[menu].components, k, 1)
+  end
+end
+
 -- EXPORTS
 exports("AddMenu", AddMenu)
 exports("AddSubMenu", AddSubMenu)
@@ -165,6 +176,7 @@ exports("CloseMenu", CloseMenu)
 exports("IsAnyMenuOpen", IsAnyMenuOpen)
 exports("IsMenuOpen", IsMenuOpened)
 exports("GetOpenedMenu", GetOpenedMenu)
+exports("ClearMenu", ClearMenu)
 
 -- EVENTS
 AddEventHandler("onResourceStop", function(resource)
