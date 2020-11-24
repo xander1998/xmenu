@@ -21,8 +21,8 @@ function xMenu:BindButton(name, callback)
   exports["xmenu"]:AddButton(name, self.Handle, callback, self.Resource)
 end
 
-function xMenu:BindCheckbox(name, callback)
-  exports["xmenu"]:AddCheckbox(name, self.Handle, callback, self.Resource)
+function xMenu:BindCheckbox(name, state, callback)
+  exports["xmenu"]:AddCheckbox(name, state, self.Handle, callback, self.Resource)
 end
 
 function xMenu:BindList(name, list, callback)
