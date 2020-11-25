@@ -69,14 +69,14 @@ function AddButton(name, menu, callback, resource)
   })
 end
 
-function AddCheckbox(name, menu, callback, resource)
+function AddCheckbox(name, state, menu, callback, resource)
   local index = Utils.GenerateUUID()
 
   Components[index] = {
     name = name,
     type = "checkbox",
     action = callback,
-    state = false,
+    state = state,
     resource = resource
   }
 
@@ -84,7 +84,7 @@ function AddCheckbox(name, menu, callback, resource)
     index = index,
     name = name,
     type = "checkbox",
-    state = false
+    state = state
   })
 end
 
